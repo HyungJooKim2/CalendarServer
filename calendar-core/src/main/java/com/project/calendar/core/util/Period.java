@@ -6,9 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-/**
- * @author Larry
- */
 @Getter
 public class Period {
     private final LocalDateTime startAt;

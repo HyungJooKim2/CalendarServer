@@ -37,6 +37,7 @@ public class User extends BaseEntity {
         return birthday;
     }
 
+    //strategy 패턴 적용
     public boolean isMatched(Encryptor encryptor, String pw) {
         return encryptor.isMatch(pw, this.password);
     }
