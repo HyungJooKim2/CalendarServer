@@ -1,25 +1,43 @@
 package com.project.calendar.core.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import com.project.calendar.core.util.Encryptor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
-@Table(name = "users")
 @Entity
-public class User extends BaseEntity{
+@Table(name = "users")
+public class User extends BaseEntity {
 
     private String name;
     private String email;
-    private String password;
+    private String password; // hashed
     private LocalDate birthday;
 
-    public User(String name, String email, String pw, LocalDateTime now) {
+    @Builder
+    public User(String name, String email, String password, LocalDate birthday) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.birthday = birthday;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public boolean isMatched(Encryptor encryptor, String pw) {
+        return encryptor.isMatch(pw, this.password);
     }
 }
