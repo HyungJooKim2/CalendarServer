@@ -3,15 +3,16 @@ package com.project.calendar.core.domain.entity;
 import com.project.calendar.core.domain.Event;
 import com.project.calendar.core.domain.RequestStatus;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @NoArgsConstructor
-@Table(name = "engagements")
 @Entity
+@Table(name = "engagements")
 public class Engagement extends BaseEntity{
 
     @JoinColumn(name = "schedule_id")

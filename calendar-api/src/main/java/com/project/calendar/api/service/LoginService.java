@@ -27,11 +27,7 @@ public class LoginService {
          1. UserService 에 create 요청 (이미 존재하는 유저 검증은 UserService 담당)
          2. session 에 담고 리턴
          */
-        final User user = userService.create(new UserCreateReq(
-                signUpReq.getName(),
-                signUpReq.getEmail(),
-                signUpReq.getPassword(),
-                signUpReq.getBirthday()));
+        final User user = userService.create(new UserCreateReq(signUpReq.getName(), signUpReq.getEmail(), signUpReq.getPassword(), signUpReq.getBirthday()));
         //http 요청 안에 포함되는 세션정보를 가져와 setAttribute를 사용하여 key, value를 담음
         session.setAttribute(LOGIN_SESSION_KEY, user.getId());
     }

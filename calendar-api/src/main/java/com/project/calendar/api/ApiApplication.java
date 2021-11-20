@@ -19,7 +19,7 @@ import java.util.List;
 @EntityScan("com.project.calendar.core")
 @EnableJpaRepositories("com.project.calendar.core")
 @RestController
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.project.calendar")
 @AllArgsConstructor
 @EnableJpaAuditing //Auditing과 관련된 bean들이 이용가능됨
 public class ApiApplication {

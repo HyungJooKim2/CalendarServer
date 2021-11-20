@@ -12,9 +12,9 @@ import java.util.List;
 
 //이 안에서만 빌더 사용 가능
 @Builder(access = AccessLevel.PRIVATE)
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table(name = "schedules")
 @Entity
 public class Schedule extends BaseEntity{

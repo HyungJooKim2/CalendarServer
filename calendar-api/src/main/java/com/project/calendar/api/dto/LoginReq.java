@@ -6,8 +6,8 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 public class LoginReq {
-    @NotBlank
+    //@NotBlank
     private final String email;
-    @NotBlank
+    //@NotBlank
     private final String password;
 }
