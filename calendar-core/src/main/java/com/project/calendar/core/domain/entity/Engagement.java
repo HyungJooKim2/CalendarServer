@@ -2,6 +2,7 @@ package com.project.calendar.core.domain.entity;
 
 import com.project.calendar.core.domain.Event;
 import com.project.calendar.core.domain.RequestStatus;
+import com.project.calendar.core.domain.ScheduleType;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,11 +10,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Getter
 @NoArgsConstructor
 @Entity
 @Table(name = "engagements")
-public class Engagement extends BaseEntity{
+public class Engagement extends BaseEntity {
 
     @JoinColumn(name = "schedule_id")
     @ManyToOne
@@ -22,7 +22,26 @@ public class Engagement extends BaseEntity{
     @JoinColumn(name = "attendee_id")
     @ManyToOne
     private User attendee;
-    private RequestStatus requestStatus;  //약속을 거절했는지 수락했는지
 
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status;
 
+    public Engagement(Schedule eventSchedule, User attendee) {
+        assert eventSchedule.getScheduleType() == ScheduleType.EVENT;
+        this.schedule = eventSchedule;
+        this.status = RequestStatus.REQUESTED;
+        this.attendee = attendee;
+    }
+
+    public Event getEvent() {
+        return schedule.toEvent();
+    }
+
+    public User getAttendee() {
+        return attendee;
+    }
+
+    public RequestStatus getStatus() {
+        return status;
+    }
 }

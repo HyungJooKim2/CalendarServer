@@ -6,9 +6,6 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-/**
- * @author Larry
- */
 public class UserTest {
 
     private final Encryptor alwaysTrueEncryptor = new Encryptor() {

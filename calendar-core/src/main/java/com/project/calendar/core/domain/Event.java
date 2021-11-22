@@ -13,12 +13,29 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@NoArgsConstructor
-@Data
 public class Event {
-    private Schedule schedule;
+    private final Schedule schedule;
 
-    public Event(Schedule schedule){
+    public Event(Schedule schedule) {
         this.schedule = schedule;
+    }
+
+    public Long getId() {
+        return this.schedule.getId();
+    }
+    public LocalDateTime getStartAt() {
+        return schedule.getStartAt();
+    }
+
+    public LocalDateTime getEndAt() {
+        return schedule.getEndAt();
+    }
+
+    public User getWriter() {
+        return this.schedule.getWriter();
+    }
+
+    public boolean isOverlapped(LocalDateTime startAt, LocalDateTime endAt) {
+        return this.getStartAt().isBefore(endAt) && startAt.isBefore(this.getEndAt());
     }
 }
