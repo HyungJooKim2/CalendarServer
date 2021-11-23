@@ -3,11 +3,13 @@ package com.project.calendar.core.domain.entity;
 import com.project.calendar.core.domain.Event;
 import com.project.calendar.core.domain.RequestStatus;
 import com.project.calendar.core.domain.ScheduleType;
+import com.project.calendar.core.util.Period;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @NoArgsConstructor
@@ -43,5 +45,14 @@ public class Engagement extends BaseEntity {
 
     public RequestStatus getStatus() {
         return status;
+    }
+
+
+    public boolean isOverlapped(Period period) {
+        return this.schedule.isOverlapped(period);
+    }
+
+    public Schedule getSchedule() {
+        return schedule;
     }
 }
