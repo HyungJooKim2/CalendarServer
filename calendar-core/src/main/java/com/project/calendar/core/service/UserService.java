@@ -24,7 +24,7 @@ public class UserService {
         userRepository.findByEmail(req.getEmail())
                 .ifPresent(u -> {  //회원가입인데 있으면 안되니
                    // throw new CalendarException(ErrorCode.USER_NOT_FOUND);
-                    throw new RuntimeException("user already existed!");
+                    throw new CalendarException(ErrorCode.ALREADY_EXISTS_USER);
                 });
         return userRepository.save(User.builder()
                 .name(req.getName())
@@ -42,8 +42,7 @@ public class UserService {
     }
 
     @Transactional
-    public User getOrThrowById(Long id) {
+    public User findByUserId(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new CalendarException(ErrorCode.USER_NOT_FOUND));
     }
-
 }

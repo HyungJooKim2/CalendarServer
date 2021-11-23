@@ -22,7 +22,7 @@ public class NotificationService {
 
     @Transactional
     public void create(NotificationCreateReq req, AuthUser authUser) {
-        final User user = userService.getOrThrowById(authUser.getId());
+        final User user = userService.findByUserId(authUser.getId());
         final List<LocalDateTime> notifyAtList = req.getRepeatTimes();
         notifyAtList.forEach(notifyAt ->{
             final Schedule notificationSchedule =
