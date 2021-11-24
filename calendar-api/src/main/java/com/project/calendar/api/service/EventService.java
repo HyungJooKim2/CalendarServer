@@ -1,10 +1,12 @@
 package com.project.calendar.api.service;
 
 import com.project.calendar.api.dto.AuthUser;
+import com.project.calendar.api.dto.EngagementEmailStuff;
 import com.project.calendar.api.dto.EventCreateReq;
 import com.project.calendar.core.domain.RequestStatus;
 import com.project.calendar.core.domain.entity.Engagement;
 import com.project.calendar.core.domain.entity.Schedule;
+import com.project.calendar.core.domain.entity.User;
 import com.project.calendar.core.domain.entity.repository.EngagementRepository;
 import com.project.calendar.core.domain.entity.repository.ScheduleRepository;
 import com.project.calendar.core.exception.CalendarException;
@@ -16,13 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 @Service
 @RequiredArgsConstructor
 public class EventService {
     private final UserService userService;
     private final ScheduleRepository scheduleRepository;
     private final EngagementRepository engagementRepository;
-    private final FakeEmailService emailService;
+    private final RealEmailService emailService;
 
     @Transactional
     public void create(EventCreateReq req, AuthUser authUser) {
@@ -43,12 +47,21 @@ public class EventService {
             throw new CalendarException(ErrorCode.EVENT_CREATE_OVERLAPPED_PERIOD);
         }
         final Schedule eventSchedule = Schedule.event(req.getTitle(), req.getDescription(), req.getStartAt(), req.getEndAt(), userService.findByUserId(authUser.getId()));
+
         scheduleRepository.save(eventSchedule);
-        req.getAttendeeIds().stream()
-                .map(userService::findByUserId)
-                .forEach(user -> {
-                    final Engagement e = engagementRepository.save(new Engagement(eventSchedule, user));
-                    emailService.sendEngagement(e);
-                });
+
+        final List<User> attendeeList = req.getAttendeeIds().stream().map(userService::findByUserId).collect(toList());
+
+        attendeeList.forEach(user -> {
+            final Engagement e = engagementRepository.save(new Engagement(eventSchedule, user));
+            emailService.sendEngagement(
+                    new EngagementEmailStuff(
+                            e.getId(),
+                            e.getAttendee().getEmail(),
+                            attendeeList.stream().map(User::getEmail).collect(toList()),
+                            e.getEvent().getTitle(),
+                            e.getEvent().getPeriod()
+                    ));
+        });
     }
 }

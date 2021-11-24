@@ -5,9 +5,6 @@ import com.project.calendar.core.domain.entity.Schedule;
 import com.project.calendar.core.exception.CalendarException;
 import com.project.calendar.core.exception.ErrorCode;
 
-/**
- * @author Larry
- */
 public abstract class DtoConverter {
 
     public static ScheduleDto toForListDto(Schedule schedule) {

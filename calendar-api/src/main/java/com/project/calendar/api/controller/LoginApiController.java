@@ -24,9 +24,9 @@ public class LoginApiController {
     }
 
     @PostMapping("/api/login")
-    public ResponseEntity<Void> login(@RequestBody LoginReq loginReq, HttpSession httpSession) {
+    public String login(@RequestBody LoginReq loginReq, HttpSession httpSession) {
         loginService.login(loginReq, httpSession);
-        return ResponseEntity.ok().build();
+        return loginService.login(loginReq, httpSession);
     }
 
     @PostMapping("/api/logout")

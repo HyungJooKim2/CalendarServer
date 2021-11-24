@@ -1,6 +1,6 @@
 package com.project.calendar.api.dto;
 
-import com.project.calendar.core.domain.type.TimeUnit;
+import com.project.calendar.core.domain.entity.type.TimeUnit;
 import com.project.calendar.core.exception.CalendarException;
 import com.project.calendar.core.exception.ErrorCode;
 import lombok.Data;
@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
-
 import static java.util.stream.Collectors.toList;
 
 @Data

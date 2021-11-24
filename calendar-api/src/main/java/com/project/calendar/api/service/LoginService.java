@@ -34,7 +34,7 @@ public class LoginService {
 
     //로그인 reuqest를 받아 세션에 값이 있었는지 확인 후 아이디 비밀번호가 맞는지 확인 후 세션에 추가
     @Transactional
-    public void login(LoginReq loginReq, HttpSession session) {
+    public String login(LoginReq loginReq, HttpSession session) {
         /*
         세션 값이 있으면 리턴
         없으면 비밀번호 체크 후 로그인
@@ -42,12 +42,13 @@ public class LoginService {
         //이미 세션에 있다면 (이미 로그인이 되어있으면) 아이디가 나옴
         final Long userId = (Long) session.getAttribute(LOGIN_SESSION_KEY);
         if (userId != null) {
-            return;
+            return userId.toString();
         }                                        //아매알, 패스워드가 매치되는 유저가 있는지 있다면 가져옴
         final Optional<User> user = userService.findPwMatchUser(loginReq.getEmail(), loginReq.getPassword());
         if (user.isPresent()) {
             //있다면 세션에 추가
             session.setAttribute(LOGIN_SESSION_KEY, user.get().getId());
+            return user.get().getId().toString();
         } else {
             throw new CalendarException(ErrorCode.PASSWORD_NOT_MATCH);
         }

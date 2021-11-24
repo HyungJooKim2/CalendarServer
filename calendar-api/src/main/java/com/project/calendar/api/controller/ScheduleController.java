@@ -1,10 +1,8 @@
 package com.project.calendar.api.controller;
 
 import com.project.calendar.api.dto.*;
-import com.project.calendar.api.service.EventService;
-import com.project.calendar.api.service.NotificationService;
-import com.project.calendar.api.service.ScheduleQueryService;
-import com.project.calendar.api.service.TaskService;
+import com.project.calendar.api.service.*;
+import com.project.calendar.core.domain.RequestStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +24,7 @@ public class ScheduleController {
     private final EventService eventService;
     private final TaskService taskService;
     private final NotificationService notificationService;
+    private final EngagementService engagementService;
 
     @PostMapping("/tasks")
     public ResponseEntity<Void> createTask(@RequestBody TaskCreateReq taskCreateReq,
@@ -79,6 +78,13 @@ public class ScheduleController {
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM") String yearMonth
     ) {
         return scheduleQueryService.getSchedulesByMonth(yearMonth == null ? YearMonth.now() : YearMonth.parse(yearMonth), authUser);
+    }
+
+    @PutMapping("/events/engagements/{engagementId}")         //수락 또는 거절
+    public RequestStatus updateEngagement(@Valid @RequestBody ReplyEngagementReq replyEngagementReq,
+                                          @PathVariable Long engagementId,
+                                          AuthUser authUser){
+        return engagementService.update(authUser, engagementId, replyEngagementReq.getType());
     }
 
 }

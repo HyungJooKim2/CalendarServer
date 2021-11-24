@@ -3,6 +3,7 @@ package com.project.calendar.core.domain.entity;
 import com.project.calendar.core.domain.Event;
 import com.project.calendar.core.domain.RequestStatus;
 import com.project.calendar.core.domain.ScheduleType;
+import com.project.calendar.core.domain.entity.type.RequestReplyType;
 import com.project.calendar.core.util.Period;
 import lombok.Data;
 import lombok.Getter;
@@ -54,5 +55,21 @@ public class Engagement extends BaseEntity {
 
     public Schedule getSchedule() {
         return schedule;
+    }
+
+    public boolean isRequested() {
+        return this.status == RequestStatus.REQUESTED;
+    }
+
+    public Engagement reply(RequestReplyType type) {
+        switch (type) {
+            case ACCEPT:
+                this.status = RequestStatus.ACCEPTED;
+                break;
+            case REJECT:
+                this.status = RequestStatus.REJECTED;
+                break;
+        }
+        return this;
     }
 }
